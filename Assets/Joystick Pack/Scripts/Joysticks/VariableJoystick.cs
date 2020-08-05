@@ -11,11 +11,12 @@ public class VariableJoystick : Joystick
     [SerializeField] private JoystickType joystickType = JoystickType.Fixed;
 
     private Vector2 fixedPosition = Vector2.zero;
+    private Player player;
 
     public void SetMode(JoystickType joystickType)
     {
         this.joystickType = joystickType;
-        if(joystickType == JoystickType.Fixed)
+        if (joystickType == JoystickType.Fixed)
         {
             background.anchoredPosition = fixedPosition;
             background.gameObject.SetActive(true);
@@ -29,11 +30,12 @@ public class VariableJoystick : Joystick
         base.Start();
         fixedPosition = background.anchoredPosition;
         SetMode(joystickType);
+        player = FindObjectOfType<Player>();
     }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if(joystickType != JoystickType.Fixed)
+        if (joystickType != JoystickType.Fixed)
         {
             background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
             background.gameObject.SetActive(true);
@@ -41,11 +43,21 @@ public class VariableJoystick : Joystick
         base.OnPointerDown(eventData);
     }
 
+    public override void OnDrag(PointerEventData eventData)
+    {
+        base.OnDrag(eventData);
+
+        player.direction = Direction.normalized;
+        player.quterVector.x = player.direction.x;
+        player.quterVector.z = player.direction.y;
+    }
+
     public override void OnPointerUp(PointerEventData eventData)
     {
-        if(joystickType != JoystickType.Fixed)
+        if (joystickType != JoystickType.Fixed)
             background.gameObject.SetActive(false);
 
+        player.direction = Vector3.zero;
         base.OnPointerUp(eventData);
     }
 

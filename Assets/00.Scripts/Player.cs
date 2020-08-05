@@ -1,16 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum PlayerState { Idle, Walk, Run, Attack, Eat, Die }
+
 public class Player : MonoBehaviour
 {
-    
     // Start is called before the first frame update
     public Animator animator;
+
     public PlayerState state = PlayerState.Idle;
     public VariableJoystick joystick;
-
+    public Vector2 direction;
     public string currentStateString = "Idle";
+    public Rigidbody rigidbody;
+    public float speed = 0.3f;
+    public Vector3 moveVector;
+    public Vector3 quterVector;
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -43,6 +55,17 @@ public class Player : MonoBehaviour
             currentStateString = "Die";
             animator.SetBool(currentStateString, true);
         }
-
+        if (joystick.push)
+        {
+            moveVector.x = direction.x * speed;
+            moveVector.z = direction.y * speed;
+            animator.SetBool("Run", true);
+            rigidbody.MovePosition(transform.position + moveVector);
+            rigidbody.MoveRotation(Quaternion.LookRotation(quterVector));
+        }
+        else
+        {
+            animator.SetBool("Run", false);
+        }
     }
 }
