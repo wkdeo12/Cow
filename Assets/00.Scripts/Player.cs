@@ -57,11 +57,15 @@ public class Player : MonoBehaviour
         }
         if (joystick.push)
         {
-            moveVector.x = direction.x * speed;
-            moveVector.z = direction.y * speed;
-            animator.SetBool("Run", true);
-            rigidbody.MovePosition(transform.position + moveVector);
-            rigidbody.MoveRotation(Quaternion.LookRotation(quterVector));
+            if (quterVector != Vector3.zero)
+            {
+                moveVector.x = direction.x * speed;
+                moveVector.z = direction.y * speed;
+                animator.SetBool("Run", true);
+                rigidbody.MovePosition(transform.position + moveVector);
+
+                rigidbody.MoveRotation(Quaternion.LookRotation(quterVector));
+            }
         }
         else
         {
