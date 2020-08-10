@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerState { Idle, Walk, Run, Attack, Eat, Die }
 
-public class Player : MonoBehaviour
+public class Player : LvUpCreature
 {
     // Start is called before the first frame update
     public Animator animator;
