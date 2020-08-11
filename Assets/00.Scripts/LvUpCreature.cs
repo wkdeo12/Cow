@@ -20,8 +20,14 @@ public class LvUpCreature : MonoBehaviour
         }
         else
         {
-            currentExp++;
+            currentExp += 5;
             collision.transform.gameObject.SetActive(false);
+            if (currentExp > nextExp)
+            {
+                lv++;
+                transform.localScale *= 1.2f;
+                currentExp = 0;
+            }
         }
     }
 }
